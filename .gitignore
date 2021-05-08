@@ -1,3 +1,26 @@
+# Distribution / packaging
+.Python
+*.pyc
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Serverless directories
+# .serverless
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -102,7 +125,9 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+.env*
+.env.staging
+.env.prod
 .venv
 env/
 venv/
@@ -127,3 +152,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+.vscode/settings.json
+dump.rdb
+
+*.DS_Store
+
+# IDE
+.idea

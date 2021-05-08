@@ -5,15 +5,15 @@ from fastapi_jwt_auth import AuthJWT
 from fastapi_jwt_auth.exceptions import AuthJWTException
 from pydantic import BaseModel
 from src.infrastructure.webserver.api.v1.main import router
-from src.infrastructure.webserver.api.v1.endpoints.ws import router as ws_router
-from src.infrastructure.webserver.api.v1.endpoints.dashboard import router as dashboard_router
+# from src.infrastructure.webserver.api.v1.endpoints.ws import router as ws_router
+# from src.infrastructure.webserver.api.v1.endpoints.dashboard import router as dashboard_router
 from settings import SECRET_KEY, logger
 
 
 app = FastAPI(
-    title="Shinemon-san",
-    description="Chat Management System.",
-    version="1.0.24",
+    title="Healthy-me",
+    description="htme",
+    version="1.0.0",
 )
 
 origins = [
@@ -66,10 +66,9 @@ def authjwt_exception_handler(request: Request, exc: AuthJWTException):
 
 
 app.include_router(router, prefix="/api/v1")
-app.include_router(ws_router, prefix="/api/v1/ws")
-app.include_router(dashboard_router, prefix="/api/v1/dashboard")
+# app.include_router(ws_router, prefix="/api/v1/ws")
 
 
 @app.get("/")
 async def shinemon_san():
-    return {"name": "shinemon-san"}
+    return "Please go the a proper path directory"

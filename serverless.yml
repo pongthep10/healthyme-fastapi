@@ -1,6 +1,6 @@
 service: healthyme-fastapi
 frameworkVersion: '2'
-
+#serverless deploy --aws-profile htme
 custom:
   defaultStage: staging
   currentStage: ${opt:stage, self:custom.defaultStage}
@@ -13,29 +13,28 @@ provider:
   stage: ${opt:stage, self:custom.defaultStage}
   region: ap-southeast-1
   versionFunctions: false
-
   iamRoleStatements:
     - Effect: Allow
-      Action:
-        - "sns:*"
-      Resource:
-        - "*"
-    - Effect: Allow
-      Action:
-        - lambda:InvokeFunction
+      Action: "sns:*"
       Resource: "*"
 
 plugins:
   - serverless-python-requirements
   - serverless-prune-plugin
   - serverless-dotenv-plugin
-  - serverless-plugin-warmup
-  - serverless-prune-plugin
+  - serverless-offline
+  # - serverless-plugin-warmup
   
+package:
+  exclude:
+    - node_modules/**
+    - env/**
+    - .direnv/**
+
 functions:
-  express:
+  api:
     memorySize: 256
-    handler: main.app
+    handler: main.handler
     # environment:
     #   apikey: ${file(./config/config.${self:custom.currentStage}.yaml):apikey}
     events: #Define the events that trigger the lambda
@@ -49,6 +48,22 @@ functions:
           method: ANY
           cors: true
           private: false
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # you can add statements to the Lambda function's IAM Role here
@@ -71,18 +86,6 @@ functions:
 #  environment:
 #    variable1: value1
 
-# you can add packaging information here
-#package:
-#  include:
-#    - include-me.py
-#    - include-me-dir/**
-#  exclude:
-#    - exclude-me.py
-#    - exclude-me-dir/**
-
-functions:
-  hello:
-    handler: handler.hello
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details

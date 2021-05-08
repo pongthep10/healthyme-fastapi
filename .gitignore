@@ -19,7 +19,7 @@ var/
 
 # Serverless directories
 # .serverless
-
+.serverless
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -128,6 +128,7 @@ celerybeat.pid
 .env*
 .env.staging
 .env.prod
+.env.development
 .venv
 env/
 venv/

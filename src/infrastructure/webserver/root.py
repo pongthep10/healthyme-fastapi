@@ -7,19 +7,19 @@ from pydantic import BaseModel
 from src.infrastructure.webserver.api.v1.main import router
 # from src.infrastructure.webserver.api.v1.endpoints.ws import router as ws_router
 # from src.infrastructure.webserver.api.v1.endpoints.dashboard import router as dashboard_router
-from settings import SECRET_KEY, logger
+from settings import SECRET_KEY, ROOT_PATH, logger
 
 
 app = FastAPI(
     title="Healthy-me",
     description="htme",
     version="1.0.0",
+    root_path=ROOT_PATH,
 )
 
 origins = [
     "http://localhost:8000",
     "http://localhost:3000",
-    "http://shinemon-san.dev.nsq.cloud",
 ]
 
 
@@ -70,5 +70,5 @@ app.include_router(router, prefix="/api/v1")
 
 
 @app.get("/")
-async def shinemon_san():
+async def htme():
     return "Please go the a proper path directory"

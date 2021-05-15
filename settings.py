@@ -10,12 +10,9 @@ try:
     from dotenv import load_dotenv
     load_dotenv(dotenv_path=env_path)
 except Exception as e:
-    logger.error(e)
     pass
 
-
-load_dotenv(dotenv_path=env_path)
-
+# IS_LOCAL = os.getenv("IS_LOCAL")
 SECRET_KEY = os.getenv("SECRET_KEY")
 ROOT_PATH = os.getenv("ROOT_PATH")
 # ROOT_PATH = '/'
@@ -26,4 +23,4 @@ DB_HTME_USER = os.getenv("DB_HTME_USER")
 DB_HTME_PASSWORD = os.getenv("DB_HTME_PASSWORD")
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = os.getenv("ALGORITHM")
-ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
+ACCESS_TOKEN_EXPIRE_MINUTES = os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")

@@ -1,12 +1,19 @@
 service: healthyme-fastapi
 frameworkVersion: '2'
 #serverless deploy --aws-profile htme
+
 custom:
   defaultStage: staging
   currentStage: ${opt:stage, self:custom.defaultStage}
   prune:
     automatic: true
     number: 3
+  pythonRequirements:
+    dockerizePip: non-linux
+    zip: true
+  dotenv:
+    required:
+      file: true
 provider:
   name: aws
   runtime: python3.8
@@ -22,22 +29,21 @@ plugins:
   - serverless-python-requirements
   - serverless-prune-plugin
   - serverless-dotenv-plugin
-  - serverless-offline
-  # - serverless-plugin-warmup
   
 package:
+  include:
+    - "main.py"
+    - "handler.py"
   exclude:
     - node_modules/**
     - env/**
-    - .direnv/**
+    # - .direnv/**
 
 functions:
   api:
     memorySize: 256
     handler: main.handler
-    # environment:
-    #   apikey: ${file(./config/config.${self:custom.currentStage}.yaml):apikey}
-    events: #Define the events that trigger the lambda
+    events:
       - http: #Define an HTTP endpoint that respond to the / route
           path: /
           method: ANY #Define the HTTP methods to be used (GET/POST)
@@ -48,16 +54,7 @@ functions:
           method: ANY
           cors: true
           private: false
-
-
-
-
-
-
-
-
-
-
+          
 
 
 

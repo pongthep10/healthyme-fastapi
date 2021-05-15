@@ -9,7 +9,7 @@ from src.infrastructure.webserver.api.v1.endpoints.user_endpoint import router a
 # from src.infrastructure.webserver.api.v1.endpoints.ws import router as ws_router
 # from src.infrastructure.webserver.api.v1.endpoints.dashboard import router as dashboard_router
 from settings import SECRET_KEY, ROOT_PATH, logger
-
+from src.infrastructure.databases.htme.config import database
 
 app = FastAPI(
     title="Healthy-me",
@@ -17,6 +17,16 @@ app = FastAPI(
     version="1.0.0",
     root_path=ROOT_PATH,
 )
+
+
+@app.on_event("startup")
+async def startup():
+    await database.connect()
+
+
+@app.on_event("shutdown")
+async def shutdown():
+    await database.disconnect()
 
 origins = [
     "http://localhost:8000",

@@ -18,7 +18,7 @@ load_dotenv(dotenv_path=env_path)
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 ROOT_PATH = os.getenv("ROOT_PATH")
-ROOT_PATH = '/'
+# ROOT_PATH = '/'
 DB_HTME_HOST = os.getenv("DB_HTME_HOST")
 DB_HTME_PORT = os.getenv("DB_HTME_PORT")
 DB_HTME_DB = os.getenv("DB_HTME_DB")

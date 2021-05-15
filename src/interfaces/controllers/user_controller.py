@@ -2,16 +2,18 @@ from fastapi import HTTPException
 from typing import Optional
 from src.use_cases.user_use_cases.create_user_use_case import CreateUserUseCase
 from src.infrastructure.repositories.user_repository import UserRepository
+from src.interfaces.serializers.user_serializer import UserCustomerIn
+from src.domain.entities.users_entity import UserEntity
 
 class UserController:
     def __init__(self):
-        self.customer_repository = CustomerRepository()
-        self.customer_user_case = CustomerUseCase(
-            customer_repository=self.customer_repository)
+        pass
 
-    @classmethod
-    async def create_customer(self, user):
-        create_user_use_case = CreateUserUseCase(UserRepository)
+    @staticmethod
+    async def create_customer(requests: UserCustomerIn):
+        user_entity = UserEntity(username=requests.username, password=requests.password)
+        create_user_use_case = CreateUserUseCase(UserRepository, user_entity)
+        return await create_user_use_case.process()
 
     async def get_customer_history_by_id(
             self, customer_id: str,

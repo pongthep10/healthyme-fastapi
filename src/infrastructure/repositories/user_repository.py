@@ -1,20 +1,35 @@
 from src.domain.entities.users_entity import UserEntity
-from src.infrastructure.databases.htme.db import DbManager
+from src.infrastructure.databases.htme.config import database
 from src.infrastructure.databases.htme.model import Users, UserCustomers, UserCoachs
 
-class UserInDB(UserEntity):
-    class Config:
-        orm_mode = True
-
 class UserRepository:
+    @classmethod
+    async def create_customer(self, user: UserEntity):
+        query = Users.insert().values(
+            username = user.username,
+            password = user.password,
+            email = user.email,
+        )
+        new_user = await database.execute(query)
+        return new_user
+
     @staticmethod
-    async def create_customer(user:UserEntity):
-        with DbManager() as db:
-            db_user = UserInDB(**user)
-            await db.query(db_user)
-            await db.refresh(db_user)
-        print(db_user)
-        return db_user
+    async def get_user_by_username(username: str):
+        query = "select * from users where username = :username"
+        values = {"username": username}
+        result = await database.execute(query=query, values=values)
+        return result
+
+    @staticmethod
+    async def get_user_by_username_or_email(username: str, email: str):
+        query = """
+            SELECT * from users 
+            WHERE username = :username
+            OR email = :email
+        """
+        values = {"username": username, "email": email}
+        result = await database.execute(query=query, values=values)
+        return result
 
 
     # id: Union[str, UUID]

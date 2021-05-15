@@ -1,8 +1,5 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, text, Table
-from sqlalchemy.orm import relationship
-# from src.infrastructure.databases.htme.config import Base
-from src.infrastructure.databases.htme.config import metadata, database
-import asyncio
+from src.infrastructure.databases.htme.config import metadata
 
 
 Users = Table(
@@ -21,13 +18,23 @@ Users = Table(
     Column('user_coach_id', Integer, ForeignKey("user_coachs.id")),
 )
 
-async def db_execute(q):
-    await database.connect()
-    r = await database.execute(q)
-    await database.disconnect()
-    return r
 
-query = Users.insert().values(email='pongthep11@msd', username='usernamehere',password='passsss')
+UserCustomers = Table(
+    'user_customers',
+    metadata,
+    Column('id', String, primary_key=True, server_default=text("uuid_generate_v4()")),
+)
+
+
+UserCoachs = Table(
+    'user_coachs',
+    metadata,
+    Column('id', String, primary_key=True, server_default=text("uuid_generate_v4()")),
+)
+
+
+
+# query = Users.insert().values(email='pongthep11@msd', username='usernamehere',password='passsss')
 
 # from asgiref.sync import async_to_sync
 # async_to_sync(db_execute)(query)
@@ -48,19 +55,6 @@ query = Users.insert().values(email='pongthep11@msd', username='usernamehere',pa
 #     user_customer = relationship("UserCustomer", back_populates="parent")
 #     user_coach = relationship("UserCoach", back_populates="parent")
 
-class UserCustomer(Base):
-    __tablename__ = "user_customers"
-
-    id = Column(String, primary_key=True, server_default=text("uuid_generate_v4()"))
-
-    parent = relationship("User", back_populates="user_customer")
-
-class UserCoach(Base):
-    __tablename__ = "user_coachs"
-
-    id = Column(String, primary_key=True, server_default=text("uuid_generate_v4()"))
-
-    parent = relationship("User", back_populates="user_coach")
 
 
 # from typing import List, Optional

@@ -5,6 +5,7 @@ from fastapi_jwt_auth import AuthJWT
 from fastapi_jwt_auth.exceptions import AuthJWTException
 from pydantic import BaseModel
 from src.infrastructure.webserver.api.v1.main import router
+from src.infrastructure.webserver.api.v1.endpoints.user_endpoint import router as user_router
 # from src.infrastructure.webserver.api.v1.endpoints.ws import router as ws_router
 # from src.infrastructure.webserver.api.v1.endpoints.dashboard import router as dashboard_router
 from settings import SECRET_KEY, ROOT_PATH, logger
@@ -66,6 +67,8 @@ def authjwt_exception_handler(request: Request, exc: AuthJWTException):
 
 
 app.include_router(router, prefix="/api/v1")
+app.include_router(user_router, prefix="/api/v1/user")
+app.include_router(user_router, prefix="/api/v1/user")
 # app.include_router(ws_router, prefix="/api/v1/ws")
 
 

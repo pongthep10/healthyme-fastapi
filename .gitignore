@@ -19,8 +19,9 @@ var/
 
 # Serverless directories
 # .serverless
+.requirements.zip
 .serverless
-
+unzip_requirements.py
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

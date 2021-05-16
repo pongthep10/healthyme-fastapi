@@ -1,8 +1,6 @@
-from src.domain.entities.users_entity import UserEntity
+from src.domain.entities.users_entity import UserEntity, UserCustomerEntity
 
+user = UserEntity(id='123')
+cus = UserCustomerEntity(**user.dict())
 
-sample_user = {
-      id:'sadasd',
-}
-a = UserEntity(*sample_user)
-print(a)
+print(cus)

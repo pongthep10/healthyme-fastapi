@@ -2,6 +2,7 @@ from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from typing import Optional
 from datetime import datetime, timedelta
+from jose import JWTError, jwt
 from fastapi import Depends
 
 from settings import ACCESS_TOKEN_EXPIRE_MINUTES, SECRET_KEY, ALGORITHM
@@ -21,17 +22,17 @@ def get_hashed_password(password):
     return pwd_context.hash(password)
 
 
-async def get_user_by_email(email: str):
-    user_entity = await UserRepository.get_user_by_email(email)
+async def get_user_by_username(username: str):
+    user_entity = await UserRepository.get_user_by_username(username)
     if user_entity.id:
         return user_entity
 
 
-async def authenticate_user(email: str, password: str):
-    user_entity = await get_user_by_email(email)
-    if not user.id:
+async def authenticate_user(username: str, password: str):
+    user_entity = await get_user_by_username(username)
+    if not user_entity.id:
         return False
-    if not verify_password(password, user.password):
+    if not verify_password(password, user_entity.password):
         return False
     return user_entity
 
@@ -61,7 +62,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
         token_data = TokenData(username=username)
     except JWTError:
         raise credentials_exception
-    user_entity = await get_user_by_email(email=token_data.email)
+    user_entity = await get_user_by_username(email=token_data.username)
     if user_entity.id is None:
         raise credentials_exception
     return user

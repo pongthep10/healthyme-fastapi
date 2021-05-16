@@ -6,21 +6,27 @@ except ImportError:
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, text, Table, Float
 from src.infrastructure.databases.htme.config import metadata
 
-
 Users = Table(
     "users",
     metadata,
     Column('id', String, primary_key=True, server_default=text("uuid_generate_v4()")),
     Column('username', String, unique=True, index=True),
     Column('email', String, unique=True, index=True),
+    Column('fname', String, unique=True, index=True),
+    Column('lname', String, unique=True, index=True),
+    Column('display_image_url', String, unique=True, index=True),
     Column('tel', String, unique=True, index=True),
     Column('password', String),
     Column('is_active', Boolean, default=False),
     Column('is_admin', Boolean, default=False),
-    Column('is_coach', Boolean, default=False),
-    Column('is_customer', Boolean, default=False),
     Column('user_customer_id', Integer, ForeignKey("user_customers.id")),
     Column('user_coach_id', Integer, ForeignKey("user_coachs.id")),
+    Column('age', Float),
+    Column('weight_kg', Float),
+    Column('height_cm', Float),
+    Column('is_customer', Float),
+    Column('is_coach', Float),
+    Column('is_admin', Float),
 )
 
 

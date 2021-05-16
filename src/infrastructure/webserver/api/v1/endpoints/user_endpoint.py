@@ -2,7 +2,6 @@ from datetime import datetime, timedelta
 from typing import Optional
 from fastapi import APIRouter
 from fastapi import Depends, FastAPI, HTTPException, status
-from jose import JWTError, jwt
 from passlib.context import CryptContext
 from pydantic import BaseModel
 import traceback
@@ -27,7 +26,7 @@ class HTTPError(BaseModel):
 
 @router.post("/customer/create/", response_model=UserCustomerOut, 
     response_model_exclude_unset=True)
-async def create_customer(customer: UserCustomerIn = Depends(UserCustomerIn)):
+async def create_customer(customer: UserCustomerIn):
     if not all(x in customer.email for x in ['@','.']):
         raise HTTPException(status_code=422, detail="Email is not correct")
     try:

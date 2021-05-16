@@ -15,14 +15,8 @@ class UserEntity(BaseModel):
     display_image_url: Optional[str] = None
     is_active: Optional[bool] = False
     is_admin: Optional[bool] = False
-    user_customer_id: Optional[Union[str, UUID]]
-    user_coach_id: Optional[Union[str, UUID]]
-
-class UserCustomerEntity(BaseModel):
-    id: Optional[Union[str, UUID]] = None
-    program_id: Optional[Union[str, UUID]]
-    package_id: Optional[Union[str, UUID]]
-    course_id: Optional[Union[str, UUID]]
+    is_customer: Optional[bool] = False
+    is_coach: Optional[bool] = False
     age: Optional[Union[str, UUID]]
     weight_kg: Optional[float]
     height_cm: Optional[float]

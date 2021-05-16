@@ -2,14 +2,14 @@ from datetime import datetime, timedelta
 from typing import Optional
 from fastapi import APIRouter
 from fastapi import Depends, FastAPI, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from pydantic import BaseModel
-
+import traceback
 from src.interfaces.controllers.user_controller import UserController
 from src.interfaces.serializers.user_serializer import UserCustomerIn, UserCustomerOut
 from src.domain.entities.users_entity import UserEntity
+from src.shared.exception import HtmeError
 
 router = APIRouter(
     prefix="",
@@ -26,17 +26,16 @@ class HTTPError(BaseModel):
 
 
 @router.post("/customer/create/", response_model=UserCustomerOut, 
-    response_model_exclude_unset=True,
-    responses={
-            409: {
-                "model": HTTPError,
-                "description": "User exists",
-            }
-        }
-    )
-async def read_users_me(customer: UserCustomerIn = Depends(UserCustomerIn)):
+    response_model_exclude_unset=True)
+async def create_customer(customer: UserCustomerIn = Depends(UserCustomerIn)):
+    if not all(x in customer.email for x in ['@','.']):
+        raise HTTPException(status_code=422, detail="Email is not correct")
     try:
-        await UserController.create_customer(customer)
-    except:
-        raise HTTPException(status_code=400, detail="User already exists")
-    return customer
+        created_customer_entity = await UserController.create_customer(customer)
+    except HtmeError as e:
+        raise HTTPException(status_code=409, detail=e.message)
+    except Exception as e:
+        print(traceback.format_exc())
+        print(e)
+        raise HTTPException(status_code=500, detail="Somethig went worng")
+    return created_customer_entity

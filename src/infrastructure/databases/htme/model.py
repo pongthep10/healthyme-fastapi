@@ -1,4 +1,9 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, text, Table
+try:
+    import unzip_requirements
+except ImportError:
+    pass
+
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, text, Table, Float
 from src.infrastructure.databases.htme.config import metadata
 
 
@@ -23,8 +28,13 @@ UserCustomers = Table(
     'user_customers',
     metadata,
     Column('id', String, primary_key=True, server_default=text("uuid_generate_v4()")),
+    Column('program_id', String),
+    Column('package_id', String),
+    Column('course_id', String),
+    Column('age', Float),
+    Column('weight_kg', Float),
+    Column('height_cm', Float),
 )
-
 
 UserCoachs = Table(
     'user_coachs',

@@ -11,6 +11,7 @@ custom:
   pythonRequirements:
     dockerizePip: non-linux
     zip: true
+    strip: false
   dotenv:
     required:
       file: true
@@ -24,6 +25,7 @@ provider:
     - Effect: Allow
       Action: "sns:*"
       Resource: "*"
+  
 
 plugins:
   - serverless-python-requirements
@@ -32,8 +34,8 @@ plugins:
   
 package:
   include:
-    - "main.py"
-    - "handler.py"
+    - main.py
+    - requirements.txt
   exclude:
     - node_modules/**
     - env/**

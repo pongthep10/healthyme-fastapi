@@ -1,6 +1,7 @@
 from src.domain.entities.users_entity import UserEntity
 from src.infrastructure.databases.htme.config import database
 from src.infrastructure.databases.htme.model import Users, UserCustomers, UserCoachs
+from src.shared.exception import HtmeError
 
 class UserRepository:
     @classmethod
@@ -10,15 +11,22 @@ class UserRepository:
             password = user.password,
             email = user.email,
         )
-        new_user = await database.execute(query)
-        return new_user
+        new_user_uuid = await database.execute(query)
+        if new_user_uuid:   
+            return await UserRepository.get_user_by_id(new_user_uuid)
 
     @staticmethod
-    async def get_user_by_username(username: str):
-        query = "select * from users where username = :username"
-        values = {"username": username}
-        result = await database.execute(query=query, values=values)
-        return result
+    async def get_user_by_id(id: str):
+        query = "SELECT * FROM users WHERE id = :id"
+        result = await database.fetch_one(query=query, values={"id": id})
+        return UserEntity(**result)
+
+    @staticmethod
+    async def get_user_by_email(username: str):
+        query = "select * from users where email = :email"
+        values = {"email": email}
+        result = await database.fetch_all(query=query, values=values)
+        return UserEntity(**result)
 
     @staticmethod
     async def get_user_by_username_or_email(username: str, email: str):
@@ -28,8 +36,11 @@ class UserRepository:
             OR email = :email
         """
         values = {"username": username, "email": email}
-        result = await database.execute(query=query, values=values)
-        return result
+        user_id = await database.execute(query=query, values=values)
+        if user_id:
+            return UserEntity(id=user_id)
+        else:
+            return UserEntity()
 
 
     # id: Union[str, UUID]

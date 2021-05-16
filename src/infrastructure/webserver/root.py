@@ -16,7 +16,7 @@ app = FastAPI(
     title="Healthy-me",
     description="htme",
     version="1.0.0",
-    root_path=ROOT_PATH if not IS_LOCAL else ROOT_PATH,
+    root_path='/' if IS_LOCAL else ROOT_PATH,
 )
 
 

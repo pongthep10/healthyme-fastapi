@@ -24,7 +24,7 @@ class HTTPError(BaseModel):
         }
 
 
-@router.post("/customer/create/", response_model=UserCustomerOut, 
+@router.post("/customer/", response_model=UserCustomerOut, 
     response_model_exclude_unset=True)
 async def create_customer(customer: UserCustomerIn):
     if not all(x in customer.email for x in ['@','.']):

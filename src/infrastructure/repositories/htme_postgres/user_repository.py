@@ -41,6 +41,8 @@ class UserRepository:
         user_uuid = await database.execute(query=query, values=values)
         if user_uuid:   
             return await UserRepository.get_user_by_id(user_uuid)
+        else:
+            return UserEntity()
 
     @staticmethod
     async def get_user_by_username_or_email(username: str, email: str):

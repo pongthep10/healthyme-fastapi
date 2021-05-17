@@ -4,7 +4,7 @@ from typing import Optional
 from datetime import datetime, timedelta
 from jose import JWTError, jwt
 from fastapi import Depends
-
+from src.shared.exception import HtmeError
 from settings import ACCESS_TOKEN_EXPIRE_MINUTES, SECRET_KEY, ALGORITHM
 from src.domain.entities.users_entity import UserEntity
 from src.infrastructure.repositories.htme_postgres.user_repository import UserRepository
@@ -24,16 +24,17 @@ def get_hashed_password(password):
 
 async def get_user_by_username(username: str):
     user_entity = await UserRepository.get_user_by_username(username)
-    if user_entity.id:
-        return user_entity
+    return user_entity
 
 
 async def authenticate_user(username: str, password: str):
     user_entity = await get_user_by_username(username)
     if not user_entity.id:
-        return False
+        raise HtmeError('Incorrect username or password',
+            {'detail':"Incorrect username or password"})
     if not verify_password(password, user_entity.password):
-        return False
+        raise HtmeError('Incorrect username or password',
+            {'detail':"Incorrect username or password"})
     return user_entity
 
 

@@ -28,34 +28,11 @@ class UserRepository:
             new_user_uuid = await database.execute(query)
             if new_user_uuid:   
                 return await UserRepository.get_user_by_id(new_user_uuid)
-    # async def create_user_customer(self,    : UserCustomers = UserCustomers()):
-    #     async with database.transaction() as db:
-    #         user_customer_query = UserCustomers.insert().values(
-    #                 program_id = user_customer_entity.program_id,
-    #                 package_id = user_customer_entity.package_id,
-    #                 course_id = user_customer_entity.course_id,
-    #                 age = user_customer_entity.age,
-    #                 weight_kg = user_customer_entity.weight_kg,
-    #                 height_cm = user_customer_entity.height_cm,
-    #             )
-    #         new_user_customer_uuid = await database.execute(user_customer_query)
-    #         new_user_entity = await self.create_user()
-    #         user_customer_entity = 
-
-            # if new_user_customer_id:
-            #     return await UserRepository.get_user_customer_by_id(new_user_customer_uuid)
-
     @staticmethod
     async def get_user_by_id(id: str):
         query = "SELECT * FROM users WHERE id = :id"
         result = await database.fetch_one(query=query, values={"id": id})
         return UserEntity(**result)
-
-    # @staticmethod
-    # async def get_user_customer_by_id(id: str):
-    #     query = "SELECT * FROM user_customer WHERE id = :id"
-    #     result = await database.fetch_one(query=query, values={"id": id})
-    #     return UserCustomerEntity(**result)
 
     @staticmethod
     async def get_user_by_username(username: str):
@@ -78,3 +55,22 @@ class UserRepository:
             return UserEntity(id=user_id)
         else:
             return UserEntity()
+
+
+
+    # async def create_user_customer(self,    : UserCustomers = UserCustomers()):
+    #     async with database.transaction() as db:
+    #         user_customer_query = UserCustomers.insert().values(
+    #                 program_id = user_customer_entity.program_id,
+    #                 package_id = user_customer_entity.package_id,
+    #                 course_id = user_customer_entity.course_id,
+    #                 age = user_customer_entity.age,
+    #                 weight_kg = user_customer_entity.weight_kg,
+    #                 height_cm = user_customer_entity.height_cm,
+    #             )
+    #         new_user_customer_uuid = await database.execute(user_customer_query)
+    #         new_user_entity = await self.create_user()
+    #         user_customer_entity = 
+
+            # if new_user_customer_id:
+            #     return await UserRepository.get_user_customer_by_id(new_user_customer_uuid)
